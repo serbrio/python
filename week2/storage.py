@@ -2,7 +2,6 @@ import os
 import tempfile
 import argparse
 import json
-from collections import OrderedDict
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--key', help='--key <key_name>')
@@ -13,13 +12,17 @@ storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
 
 
 def storage_dict():
-    with open(storage_path, 'r') as f:
-        d = {}
-        try:
-            d = json.load(f)
-        except:
-            pass
+    d = {}
+    try:
+        with open(storage_path, 'r') as f:
+            try:
+                d = json.load(f)
+            except:
+                pass
         return d
+    except:
+        with open(storage_path, 'w') as f:
+            return d
 
 
 def main():
