@@ -12,39 +12,31 @@ args = parser.parse_args()
 storage_path = os.path.join(tempfile.gettempdir(), 'storage.data')
 
 
-#def opnjs():
-#    with open(storage_path, 'rw') as f:
-#        stor = json.load(f)
+def storage_dict():
+    with open(storage_path, 'r') as f:
+        d = {}
+        try:
+            d = json.load(f)
+        except:
+            pass
+        return d
 
 
 def main():
     if args.key and args.val:
-        with open(storage_path, 'r') as f:
-            oD = OrderedDict()
-            try:
-                oD = json.load(f)
-            except:
-                print('load json except')
-            if args.key in oD:
-                oD[args.key].append(args.val)
-            else:
-                oD[args.key] = [args.val]
-            with open(storage_path, 'w') as final:
-                json.dump(oD, final)
-                print('key and val written')
-
+        stor = storage_dict()
+        if args.key in stor:
+            stor[args.key].append(args.val)
+        else:
+            stor[args.key] = [args.val]
+        with open(storage_path, 'w') as final:
+            json.dump(stor, final)
     elif args.key:
-        with open(storage_path, 'r') as f:
-            oD = OrderedDict()
-            try:
-                oD = json.load(f)
-            except:
-                print('load json except (key branch)')
-            if args.key in oD:
-                print(', '.join(oD[args.key]))
-                print('key in the list')
-            else:
-                print(None)
+        stor = storage_dict()
+        if args.key in stor:
+            print(', '.join(stor[args.key]))
+        else:
+            print(None)
 
 
 if __name__ == '__main__':
