@@ -14,4 +14,7 @@ class FileReader:
             return err.args[0]
         with open(self.path_to_file) as f:
             content = f.read()
+            #print(__name__)
             return content
+
+#print(os.path.realpath(__file__))
