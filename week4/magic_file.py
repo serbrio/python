@@ -12,13 +12,21 @@ class File:
         self._rawpath = pth
         self.current = 0
 
+    def write(self, content):
+        with open(self.path, 'a') as f:
+            return f.write(content)
+
+    def read(self):
+        with open(self.path, 'r') as f:
+            return f.read()
+
     def __iter__(self):
         return self
 
     def _count_file_lines(self):
         n = 0
         with open(self.path, 'r') as f:
-            for _ in f.readline():
+            for _ in f.readlines():
                 n += 1
         return n
 
@@ -40,15 +48,7 @@ class File:
         if not isinstance(obj, __class__):
             raise TypeError('"{}" is not instance of {}'.format(obj, __class__))
         sumpath = tempfile.NamedTemporaryFile(delete=False).name
-        with open(sumpath, 'a') as sumfile:
-            with open(self.path, 'r') as first:
-                for line in first.readlines():
-                    sumfile.write(line)
-            with open(obj.path, 'r') as second:
-                for line in second.readlines():
-                    sumfile.write(line)
-            return File(sumpath)
+        sumfile = File(sumpath)
+        sumfile.write(self.read() + obj.read())
+        return sumfile
 
-    def write(self, s):
-        with open(self.path, 'a') as f:
-            f.write(s)
