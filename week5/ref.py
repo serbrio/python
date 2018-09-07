@@ -10,11 +10,12 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         
         request_path = self.path
-        
-        print("\n----- Request Start ----->\n")
-        print("Request path:", request_path)
-        print("Request headers:", self.headers)
-        print("<----- Request End -----\n")
+
+        if "stat.browser.mail.ru" in request_path:
+            print("\n----- Request Start ----->\n")
+            print("Request path:", request_path)
+            print("Request headers:", self.headers)
+            print("<----- Request End -----\n")
         
         self.send_response(200)
         self.send_header("Set-Cookie", "foo=bar")
@@ -23,18 +24,20 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         
         request_path = self.path
-        
-        print("\n----- Request Start ----->\n")
-        print("Request path:", request_path)
+
+        if "stat.browser.mail.ru" in request_path:
+            print("\n----- Request Start ----->\n")
+            print("Request path:", request_path)
         
         request_headers = self.headers
         content_length = request_headers.get('Content-Length')
         length = int(content_length) if content_length else 0
-        
-        print("Content Length:", length)
-        print("Request headers:", request_headers)
-        print("Request payload:", self.rfile.read(length))
-        print("<----- Request End -----\n")
+
+        if "stat.browser.mail.ru" in request_path:
+            print("Content Length:", length)
+            print("Request headers:", request_headers)
+            print("Request payload:", self.rfile.read(length))
+            print("<----- Request End -----\n")
         
         self.send_response(200)
         self.end_headers()
@@ -43,7 +46,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     do_DELETE = do_GET
         
 def main():
-    port = 8080
+    port = 5555
     print('Listening on localhost:%s' % port)
     server = HTTPServer(('', port), RequestHandler)
     server.serve_forever()
