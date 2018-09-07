@@ -5,13 +5,15 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from optparse import OptionParser
 
+name = "google.com"
+
 class RequestHandler(BaseHTTPRequestHandler):
     
     def do_GET(self):
         
         request_path = self.path
 
-        if "stat.browser.mail.ru" in request_path:
+        if name in request_path:
             print("\n----- Request Start ----->\n")
             print("Request path:", request_path)
             print("Request headers:", self.headers)
@@ -25,7 +27,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         
         request_path = self.path
 
-        if "stat.browser.mail.ru" in request_path:
+        if name in request_path:
             print("\n----- Request Start ----->\n")
             print("Request path:", request_path)
         
@@ -33,7 +35,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         content_length = request_headers.get('Content-Length')
         length = int(content_length) if content_length else 0
 
-        if "stat.browser.mail.ru" in request_path:
+        if name in request_path:
             print("Content Length:", length)
             print("Request headers:", request_headers)
             print("Request payload:", self.rfile.read(length))
