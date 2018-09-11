@@ -5,7 +5,27 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from optparse import OptionParser
 
-name = "google.com"
+name = "some"
+
+
+def ml_sorter(line):
+    try:
+        final = []
+        others = []
+        items = [pair.strip() for pair in line.split('\t') if pair]
+        for item in items:
+            if "type:" in item:
+                final.insert(0, item)
+            elif "label:" in item:
+                final.append(item)
+            else:
+                others.append(item)
+        others.sort()
+        final.extend(others)
+        return final
+    except:
+        return line
+
 
 class RequestHandler(BaseHTTPRequestHandler):
     
@@ -38,7 +58,12 @@ class RequestHandler(BaseHTTPRequestHandler):
         if name in request_path:
             print("Content Length:", length)
             print("Request headers:", request_headers)
-            print("Request payload:", self.rfile.read(length))
+            body_raw = self.rfile.read(length)
+            body_str = body_raw.decode("utf-8")
+            body_lines = body_str.split('\n')
+            for line in body_lines:
+                print(ml_sorter(line))
+            #print("Request payload:", self.rfile.read(length))
             print("<----- Request End -----\n")
         
         self.send_response(200)
