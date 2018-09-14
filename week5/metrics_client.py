@@ -13,13 +13,11 @@ class Client():
         return str(int(time.time()))
 
     def get(self, key):
-        return {}
-        pass
+        return {"k": key}
 
     def put(self, key, value, timestamp=None):
         timestamp = timestamp or self.get_timestamp()
-        print('put key %s and value %s at time %s' % (key, value, timestamp))
-        pass
+        return 'put key %s and value %s at time %s' % (key, value, timestamp)
 
 
 class ClientError(Exception):  # hope to use it
