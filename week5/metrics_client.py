@@ -27,12 +27,11 @@ class Client:
     def put(self, key, value, timestamp=None):
         timestamp = timestamp or self.get_timestamp()
         try:
-            key = str(key)
-            value = float(value)
-            timestamp = int(timestamp)
+            if not type(key) == str and not type(value) == float and not type(timestamp) == int:
+                raise ClientError
             self.cli_sock.sendall(("put %s %s %s\n" % (key, value, timestamp)).encode("utf-8"))
-        except Exception:
-            raise ClientError
+        except ClientError:
+            print('client error')
 
 
 class ClientError(Exception):  # hope to use it
