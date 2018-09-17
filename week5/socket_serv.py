@@ -6,7 +6,7 @@ with socket.socket() as sock:
     sock.listen()
     while True:
         conn, addr = sock.accept()
-        conn.settimeout(5)    # timeout := None|0|gt 0
+        conn.settimeout(None)    # timeout := None|0|gt 0
         with conn:
             while True:
                 try:
